@@ -1,14 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-// import ConversationComponents from './ConversationComponents';
-
-/* 
-
-
-
-*/
-
-
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import Button from "@material-ui/core/Button";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import Divider from "@material-ui/core/Divider";
 
 const Container = styled.div`
   display: flex;
@@ -19,15 +15,20 @@ const Container = styled.div`
   color: black;
 `;
 
+const ProfileHeader = styled.div`
+  display: flex;
+  color: black;
+  flex-direction: row;
+  background: #ededed;
+  padding: 10px;
+  align-items: center;
+  gap: 10px;
+`;
+
 const SearchBox = styled.div`
   display: flex;
   background: #f6f6f6;
   padding: 10px;
-`;
-
-const UserListItem = styled.p`
-  border-bottom: 1px solid gray;
-  padding-bottom: 10px;
 `;
 
 export const SearchContainer = styled.div`
@@ -54,6 +55,11 @@ export const SearchInput = styled.input`
   margin-left: 10px;
 `;
 
+const MessageTime = styled.span`
+  font-size: 12px;
+  margin-left: 8px; /* Add margin between message content and time */
+`;
+
 const SearchButton = styled.button`
   background: #4caf50;
   border: none;
@@ -67,54 +73,120 @@ const SearchButton = styled.button`
   cursor: pointer;
 `;
 
-const ContactListComponent = ({setSharedState}) => {
-  const [users, setUsers] = useState([]);
-  const [inputValue, setInputValue] = useState('');
+const ContactListComponent = ({ setSharedState }) => {
+  const [apiKey, setApiKey] = useState(null);
+  const [usersIchatWith, setUsers] = useState([]);
+  // const [myMessages, setMyMessages] = useState([]);
+  const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
     // Call function to retrieve list of users
     getUsers();
+    // getMessages();
   }, []);
 
   const getUsers = async () => {
     try {
-      // Perform GET request to retrieve user list data
       const response = await fetch(
-        'https://cabinet.minion.chat.junglesucks.com/users'
+        "https://cabinet.minion.chat.junglesucks.com/getUsersIChatWith",
+        {
+          method: "POST",
+          headers: {},
+          body: JSON.stringify({
+            ApiKey: localStorage.getItem("ApiKey"),
+            Username: localStorage.getItem("name"),
+          }),
+        }
       );
       const data = await response.json();
-      setUsers(data);
+      if (response.ok) {
+        console.log(data);
+        setUsers(data);
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
+  const convertTo12HourFormat = (timestamp) => {
+    const date = new Date(timestamp);
+    const options = { hour: "numeric", minute: "numeric", hour12: true };
+    const formattedTime = date.toLocaleString("en-US", options);
+    return formattedTime;
+  };
+
+  const updateContactList = async () => {
+    try {
+      const response = await fetch(
+        "https://cabinet.minion.chat.junglesucks.com/checkNewMessages",
+        {
+          method: "POST",
+          headers: {},
+          body: JSON.stringify({
+            ApiKey: localStorage.getItem("ApiKey"),
+            Username: localStorage.getItem("name"),
+          }),
+        }
+      );
+      const data = await response.json();
+      if (response.ok) {
+        console.log(data);
+      }
+      // const data = await response.json();
+      // setMessages((prevMessages) => [...prevMessages, { text: inputValue }]);
+      // setInputValue("");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  // setInterval(updateContactList, 3000);
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
 
-  const handleSearch = () => {
+  const handleSearch = (inputValue) => {
     setSharedState(inputValue);
-    // console.log(inputValue)
   };
 
   return (
     <Container>
-      <SearchBox>
+      {/* <SearchBox>
         <SearchContainer>
-          <SearchIcon src={'/search-icon.svg'} />
+          <SearchIcon src={"/search-icon.svg"} />
           <SearchInput
-            placeholder='Search user'
+            placeholder="Search user"
             value={inputValue}
             onChange={handleInputChange}
           />
-          <SearchButton onClick={handleSearch}>Search</SearchButton>
         </SearchContainer>
       </SearchBox>
-      {users.map((user) => (
-        <UserListItem key={user.Username}>{user.Username}</UserListItem>
-      ))}
-    
+      <SearchButton onClick={handleSearch(inputValue)}>Search</SearchButton> */}
+      <ProfileHeader>
+        Logged in as: {localStorage.getItem("name")}
+      </ProfileHeader>
+      <List style={{ overflow: "auto", maxHeight: "300px" }}>
+        {usersIchatWith ? (
+          usersIchatWith.map((user, index) => (
+            <React.Fragment key={user.username}>
+              <ListItem>
+                <Button fullWidth onClick={() => handleSearch(user.username)}>
+                  <ListItemText primary={user.username} />
+                  <MessageTime>
+                    {convertTo12HourFormat(user.timestamp)}
+                  </MessageTime>
+                </Button>
+              </ListItem>
+              {index < usersIchatWith.length - 1 && <Divider />}
+            </React.Fragment>
+          ))
+        ) : (
+          <ListItem>
+            <ListItemText primary="No users to chat" />
+          </ListItem>
+        )}
+      </List>
+
+      {/* <p>{localStorage.getItem("name")}</p> */}
     </Container>
   );
 };

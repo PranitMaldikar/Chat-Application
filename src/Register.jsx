@@ -20,8 +20,8 @@ export const Register = (props) => {
     const minion2 = 'https://lecture.minion.chat.junglesucks.com';
     
     const data = {
-      'username': username,
-      'password': password,
+      'Username': username,
+      'Password': password,
       'clientUrlIdentifier': 'a'
     };
     
@@ -34,7 +34,7 @@ export const Register = (props) => {
     })
     .then(response => {
       if (response.ok) {
-        navigateToLogin();
+        navigateToLogin(); // response => session token
       } else if (response.status === 409) {
         setErrorMessage('Username already taken, please choose a different one.');
       } else {
@@ -64,7 +64,7 @@ export const Register = (props) => {
       <h2>Register</h2>
       <form className="register-form" onSubmit={handleSubmit}>
         <label htmlFor="username">Username</label>
-        <input value={username} onChange={(e) => setUsername(e.target.value)} type="text" placeholder="newbeepboop" id="username" name="username" />
+        <input value={username} onChange={(e) => setUsername(e.target.value)} type="text" placeholder="username" id="username" name="username" />
         <label htmlFor="password">Password</label>
         <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="********" id="password" name="password" />
         {errorMessage && <p className="error-message">{errorMessage}</p>}
