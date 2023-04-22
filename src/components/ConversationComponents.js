@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { SearchContainer, SearchInput } from "./ContactListComponents";
 
 const Container = styled.div`
@@ -12,9 +12,10 @@ const Container = styled.div`
 
 const ProfileHeader = styled.div`
   display: flex;
-  color: black;
+  color: white;
+  font-weight: bold;
   flex-direction: row;
-  background: #00cccc;
+  background: #0a290a;
   padding: 10px;
   align-items: center;
   gap: 10px;
@@ -47,6 +48,19 @@ const Button = styled.button`
   font-size: 12px;
   border-radius: 12px;
   margin-left: 8px;
+  cursor: pointer;
+`;
+
+const LogoutButton = styled.button`
+  background: #006969;
+  border: none;
+  color: white;
+  padding: 12px 16px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 12px;
+  border-radius: 12px;
+  margin-left: auto;
   cursor: pointer;
 `;
 
@@ -100,10 +114,23 @@ const convertTo12HourFormat = (timestamp) => {
 const ConversationComponent = ({ sharedState }) => {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
+  const messageContainerRef = useRef(null);
 
   useEffect(() => {
     getMessages();
+    const intervalId = setInterval(getMessages, 1000);
+    return () => {
+      clearInterval(intervalId);
+    };
   }, [sharedState]);
+
+  // useEffect(() => {
+  //   // Scroll to the bottom of the message container when new messages are added
+  //   if (messageContainerRef.current) {
+  //     messageContainerRef.current.scrollTop =
+  //       messageContainerRef.current.scrollHeight;
+  //   }
+  // }, [messages]);
 
   const getMessages = async () => {
     try {
@@ -159,11 +186,19 @@ const ConversationComponent = ({ sharedState }) => {
     getMessages();
     setInputValue("");
   };
-  setInterval(getMessages(), 3000);
+
+  const handleLogout = () => {
+    window.location.href = "/login";
+    localStorage.clear();
+  };
+  // setInterval(getMessages(), 5000);
 
   return (
     <Container>
-      <ProfileHeader>{sharedState}</ProfileHeader>
+      <ProfileHeader>
+        {sharedState}
+        <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
+      </ProfileHeader>
       <MessageContainer>
         {sharedState ? (
           <React.Fragment>

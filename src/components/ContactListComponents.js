@@ -76,13 +76,19 @@ const SearchButton = styled.button`
 const ContactListComponent = ({ setSharedState }) => {
   const [apiKey, setApiKey] = useState(null);
   const [usersIchatWith, setUsers] = useState([]);
+  const [recentUsers, setRecent] = useState([]);
   // const [myMessages, setMyMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
-    // Call function to retrieve list of users
     getUsers();
-    // getMessages();
+  }, [recentUsers]);
+
+  useEffect(() => {
+    const intervalId = setInterval(updateContactList, 5000);
+    return () => {
+      clearInterval(intervalId);
+    };
   }, []);
 
   const getUsers = async () => {
@@ -100,12 +106,21 @@ const ContactListComponent = ({ setSharedState }) => {
       );
       const data = await response.json();
       if (response.ok) {
-        console.log(data);
-        setUsers(data);
+        const arr = sortObjectsByTimestamp(data);
+        setUsers(arr);
       }
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const sortObjectsByTimestamp = (arr) => {
+    arr.sort((a, b) => {
+      const timestampA = new Date(a.timestamp).getTime();
+      const timestampB = new Date(b.timestamp).getTime();
+      return timestampB - timestampA;
+    });
+    return arr;
   };
 
   const convertTo12HourFormat = (timestamp) => {
@@ -130,16 +145,19 @@ const ContactListComponent = ({ setSharedState }) => {
       );
       const data = await response.json();
       if (response.ok) {
-        console.log(data);
+        if (data != null) {
+          setRecent(data);
+        }
       }
-      // const data = await response.json();
-      // setMessages((prevMessages) => [...prevMessages, { text: inputValue }]);
-      // setInputValue("");
     } catch (error) {
       console.error(error);
+    } finally {
+      // Use setTimeout to call the function again after a delay
+      setTimeout(updateContactList, 5000); // 5 seconds interval
     }
   };
-  // setInterval(updateContactList, 3000);
+  // setInterval(updateContactList, 5000);
+
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
@@ -176,7 +194,7 @@ const ContactListComponent = ({ setSharedState }) => {
                   </MessageTime>
                 </Button>
               </ListItem>
-              {index < usersIchatWith.length - 1 && <Divider />}
+              {index < usersIchatWith.length && <Divider />}
             </React.Fragment>
           ))
         ) : (

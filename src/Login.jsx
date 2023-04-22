@@ -2,15 +2,23 @@ import React, { useState } from "react";
 
 
 export const Login = (props) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [ApiKey, setApiKey] = useState(null);
-  const [errorMessage, setErrorMessage] = useState('');
 
   const handleFormSwitch = (formType) => {
     props.onFormSwitch(formType);
     window.history.replaceState(null, null, `/${formType}`); // update URL
   }
+
+  const user = localStorage.getItem("name")
+  if(user!=null){
+    handleFormSwitch('chat');
+  }
+  
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [ApiKey, setApiKey] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  
   
 
   const handleSubmit = async (e) => {
@@ -35,6 +43,7 @@ export const Login = (props) => {
         console.log(`API key received: ${data.ApiKey}`);
         localStorage.setItem('name',username);
         localStorage.setItem('ApiKey',data.ApiKey);
+  
        
         handleFormSwitch('chat');
       } else if (response.status === 409) {
