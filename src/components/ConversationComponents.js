@@ -49,6 +49,7 @@ const Button = styled.button`
   border-radius: 12px;
   margin-left: 8px;
   cursor: pointer;
+  margin-left: auto; /* Add this property to align the button to the extreme right */
 `;
 
 const LogoutButton = styled.button`
@@ -202,29 +203,31 @@ const ConversationComponent = ({ sharedState }) => {
       <MessageContainer>
         {sharedState ? (
           <React.Fragment>
-            {messages.map((message, index) => {
-              if (message.SenderName === localStorage.getItem("name")) {
-                return (
-                  <MyMessage key={index} isYours>
-                    {message.Content}
-                    <MessageTime>
-                      {convertTo12HourFormat(message.UpdatedAt)}
-                    </MessageTime>
-                  </MyMessage>
-                );
-              } else if (message.SenderName === sharedState) {
-                return (
-                  <ReceivedMessage key={index} isYours>
-                    {message.Content}
-                    <MessageTime>
-                      {convertTo12HourFormat(message.UpdatedAt)}
-                    </MessageTime>
-                  </ReceivedMessage>
-                );
-              } else {
-                return null;
-              }
-            })}
+            {messages &&
+              messages.map((message, index) => {
+                // Add a check for messages
+                if (message.SenderName === localStorage.getItem("name")) {
+                  return (
+                    <MyMessage key={index} isYours>
+                      {message.Content}
+                      <MessageTime>
+                        {convertTo12HourFormat(message.UpdatedAt)}
+                      </MessageTime>
+                    </MyMessage>
+                  );
+                } else if (message.SenderName === sharedState) {
+                  return (
+                    <ReceivedMessage key={index} isYours>
+                      {message.Content}
+                      <MessageTime>
+                        {convertTo12HourFormat(message.UpdatedAt)}
+                      </MessageTime>
+                    </ReceivedMessage>
+                  );
+                } else {
+                  return null;
+                }
+              })}
           </React.Fragment>
         ) : (
           <h3>Enjoy decentralized chatting!</h3>
