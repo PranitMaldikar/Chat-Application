@@ -5,6 +5,11 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Scripts
 
+To access the UI, clone the project to your local computer using:
+
+### `git clone https://github.com/PranitMaldikar/front-end.git`
+
+
 In the project directory, you can run:
 
 ### `npm start`
