@@ -19,3 +19,19 @@ In the project directory, you can run:
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+
+## Master and Minion
+
+After running the app, use the following Master URL to check minion health:
+
+### https://master.chat.junglesucks.com/alive
+
+Minion URLs to check messages: 
+### https://cabinet.minion.chat.junglesucks.com/messages
+### https://lecture.minion.chat.junglesucks.com/messages
+
+Minion URLs to check users:
+
+### https://cabinet.minion.chat.junglesucks.com/users
+### https://lecture.minion.chat.junglesucks.com/users
+
