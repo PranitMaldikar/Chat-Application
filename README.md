@@ -9,6 +9,9 @@ To access the UI, clone the project to your local computer using:
 
 ### `git clone https://github.com/PranitMaldikar/front-end.git`
 
+Enter your project directory using:
+
+### `cd front-end`
 
 In the project directory, you can run:
 
