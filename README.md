@@ -1,13 +1,15 @@
 # User Registration and API-key generation
 
 ![Registration!](Registration.png)
-<<<<<<< HEAD
 
 # Chat Window
 
 ![Chat!](Chat1-4.png)
-=======
->>>>>>> 56d04ae8998e8a89cd3f51cfc4cae240e365c58d
+
+# To start a new chat!
+
+![New Chat!](NewChat.png)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
