@@ -1,6 +1,10 @@
-# Elegant Login & Register Forms built in React
+# User Registration and API-key generation
 
-[!Registration!](Registration.png)
+![Registration!](Registration.png)
+
+# Chat Window
+
+![Chat!](Chat1-4.png)
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
