@@ -1,6 +1,6 @@
 # Elegant Login & Register Forms built in React
 
-
+[!Registration!](Registration.png)
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
@@ -16,7 +16,9 @@ Enter your project directory using:
 In the project directory, you can run:
 
 ### `npm install`
+
 then
+
 ### `npm start`
 
 Runs the app in the development mode.\
@@ -28,12 +30,14 @@ After running the app, use the following Master URL to check minion health:
 
 ### https://master.chat.junglesucks.com/alive
 
-Minion URLs to check messages: 
+Minion URLs to check messages:
+
 ### https://cabinet.minion.chat.junglesucks.com/messages
+
 ### https://lecture.minion.chat.junglesucks.com/messages
 
 Minion URLs to check users:
 
 ### https://cabinet.minion.chat.junglesucks.com/users
-### https://lecture.minion.chat.junglesucks.com/users
 
+### https://lecture.minion.chat.junglesucks.com/users
