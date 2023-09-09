@@ -16,11 +16,11 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 To access the UI, clone the project to your local computer using:
 
-### `git clone https://github.com/PranitMaldikar/front-end.git`
+### `git clone https://github.com/PranitMaldikar/Chat-Application.git`
 
 Enter your project directory using:
 
-### `cd front-end`
+### `cd Chat-Application`
 
 In the project directory, you can run:
 
